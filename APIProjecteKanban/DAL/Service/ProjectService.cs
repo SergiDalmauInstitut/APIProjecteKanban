@@ -1,6 +1,6 @@
 ﻿using APIProjecteKanban.DAL.Model;
 using APIProjecteKanban.DAL.Persistance;
-using Microsoft.Data.Sqlite;
+using MySql.Data.MySqlClient;
 
 namespace APIProjecteKanban.DAL.Service
 {
@@ -16,22 +16,18 @@ namespace APIProjecteKanban.DAL.Service
 
             using (var ctx = DbContext.GetInstance())
             {
-                var query = "SELECT Id, Name FROM Project p JOIN User_Project pu ON p.Id = pu.IdProject JOIN User u ON u.Id = pu.IdUser WHERE u.Id = @Id";
+                var query = "SELECT p.Id, Name FROM Project p JOIN User_Project pu ON p.Id = pu.IdProject JOIN User u ON u.Id = pu.IdUser WHERE u.Id = @Id";
 
-                using (var command = new SqliteCommand(query, ctx))
+                using var command = new MySqlCommand(query, ctx);
+                command.Parameters.Add(new MySqlParameter("Id", Id));
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    command.Parameters.Add(new SqliteParameter("Id", Id));
-                    using (var reader = command.ExecuteReader())
+                    result.Add(new Project
                     {
-                        while (reader.Read())
-                        {
-                            result.Add(new Project
-                            {
-                                Id = Convert.ToInt32(reader["Id"].ToString()),
-                                Name = reader["Name"].ToString(),
-                            });
-                        }
-                    }
+                        Id = Convert.ToInt32(reader["Id"].ToString()),
+                        Name = reader["Name"].ToString(),
+                    });
                 }
             }
             return result;

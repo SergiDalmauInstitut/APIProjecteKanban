@@ -1,8 +1,8 @@
 ﻿using APIProjecteKanban.DAL.Model;
 using APIProjecteKanban.DAL.Persistance;
-using Microsoft.Data.Sqlite;
-using System.Text;
+using MySql.Data.MySqlClient;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace APIProjecteKanban.DAL.Service
 {
@@ -20,7 +20,7 @@ namespace APIProjecteKanban.DAL.Service
             {
                 var query = "SELECT * FROM User";
 
-                using (var command = new SqliteCommand(query, ctx))
+                using (var command = new MySqlCommand(query, ctx))
                 {
                     using (var reader = command.ExecuteReader())
                     {
@@ -52,9 +52,9 @@ namespace APIProjecteKanban.DAL.Service
             using (var ctx = DbContext.GetInstance())
             {
                 var query = "SELECT * FROM User WHERE Id = @Id";
-                using (var command = new SqliteCommand(query, ctx))
+                using (var command = new MySqlCommand(query, ctx))
                 {
-                    command.Parameters.Add(new SqliteParameter("Id", Id));
+                    command.Parameters.Add(new MySqlParameter("Id", Id));
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
@@ -83,15 +83,15 @@ namespace APIProjecteKanban.DAL.Service
             using (var ctx = DbContext.GetInstance())
             {
                 string query = "INSERT INTO User (name, lastname, birthday, role, email, password) VALUES (@name, @lastname, @birthday, @role, @email, @password)";
-                using (var command = new SqliteCommand(query, ctx))
+                using (var command = new MySqlCommand(query, ctx))
                 {
-                    command.Parameters.Add(new SqliteParameter("name", user.Name));
-                    command.Parameters.Add(new SqliteParameter("lastname", user.LastName));
-                    command.Parameters.Add(new SqliteParameter("birthday", user.Birthday));
-                    command.Parameters.Add(new SqliteParameter("role", user.Role));
-                    command.Parameters.Add(new SqliteParameter("email", user.Email));
+                    command.Parameters.Add(new MySqlParameter("name", user.Name));
+                    command.Parameters.Add(new MySqlParameter("lastname", user.LastName));
+                    command.Parameters.Add(new MySqlParameter("birthday", user.Birthday));
+                    command.Parameters.Add(new MySqlParameter("role", user.Role));
+                    command.Parameters.Add(new MySqlParameter("email", user.Email));
 
-                    command.Parameters.Add(new SqliteParameter("password", HashPassword(user.Password)));
+                    command.Parameters.Add(new MySqlParameter("password", HashPassword(user.Password)));
 
                     command.ExecuteNonQuery();
 
@@ -115,15 +115,15 @@ namespace APIProjecteKanban.DAL.Service
             using (var ctx = DbContext.GetInstance())
             {
                 string query = "UPDATE User SET name = @name, lastname = @lastname, birthday = @birthday WHERE Id = @Id";
-                using (var command = new SqliteCommand(query, ctx))
+                using (var command = new MySqlCommand(query, ctx))
                 {
-                    command.Parameters.Add(new SqliteParameter("name", user.Name));
-                    command.Parameters.Add(new SqliteParameter("lastname", user.LastName));
-                    command.Parameters.Add(new SqliteParameter("birthday", user.Birthday));
-                    command.Parameters.Add(new SqliteParameter("role", user.Role));
-                    command.Parameters.Add(new SqliteParameter("email", user.Email));
+                    command.Parameters.Add(new MySqlParameter("name", user.Name));
+                    command.Parameters.Add(new MySqlParameter("lastname", user.LastName));
+                    command.Parameters.Add(new MySqlParameter("birthday", user.Birthday));
+                    command.Parameters.Add(new MySqlParameter("role", user.Role));
+                    command.Parameters.Add(new MySqlParameter("email", user.Email));
 
-                    command.Parameters.Add(new SqliteParameter("password", HashPassword(user.Password)));
+                    command.Parameters.Add(new MySqlParameter("password", HashPassword(user.Password)));
 
                     rows_affected = command.ExecuteNonQuery();
                 }
@@ -143,9 +143,9 @@ namespace APIProjecteKanban.DAL.Service
             using (var ctx = DbContext.GetInstance())
             {
                 string query = "DELETE FROM User WHERE Id = @Id";
-                using (var command = new SqliteCommand(query, ctx))
+                using (var command = new MySqlCommand(query, ctx))
                 {
-                    command.Parameters.Add(new SqliteParameter("Id", Id));
+                    command.Parameters.Add(new MySqlParameter("Id", Id));
                     rows_affected = command.ExecuteNonQuery();
                 }
             }

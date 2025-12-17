@@ -1,5 +1,4 @@
-﻿using APIProjecteKanban.DAL.Model;
-using APIProjecteKanban.DAL.Service;
+﻿using APIProjecteKanban.DAL.Service;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,7 +9,7 @@ namespace APIProjecteKanban.Controllers
     [ApiController]
     public class TaskController : ControllerBase
     {
-        // GET users/5
+        // GET tasks/5
         [HttpGet("{id}")]
         public List<DAL.Model.Task> Get(int id)
         {

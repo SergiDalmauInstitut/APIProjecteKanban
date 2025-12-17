@@ -1,6 +1,5 @@
-﻿using APIProjecteKanban.DAL.Model;
-using APIProjecteKanban.DAL.Persistance;
-using Microsoft.Data.Sqlite;
+﻿using APIProjecteKanban.DAL.Persistance;
+using MySql.Data.MySqlClient;
 
 namespace APIProjecteKanban.DAL.Service
 {
@@ -18,9 +17,9 @@ namespace APIProjecteKanban.DAL.Service
             {
                 var query = "SELECT * FROM Task WHERE IdProject = @Id";
 
-                using (var command = new SqliteCommand(query, ctx))
+                using (var command = new MySqlCommand(query, ctx))
                 {
-                    command.Parameters.Add(new SqliteParameter("Id", Id));
+                    command.Parameters.Add(new MySqlParameter("Id", Id));
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())

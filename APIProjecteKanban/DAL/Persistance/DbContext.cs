@@ -1,16 +1,19 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using MySql.Data.MySqlClient;
 namespace APIProjecteKanban.DAL.Persistance
 {
     public class DbContext
     {
-        public static SqliteConnection GetInstance()
+        public static MySqlConnection GetInstance()
         {
             IConfiguration configuration = GetConfiguration();
 
             //obtenim la cadena de connexió del fitxer de configuració
-            string? connectionString = configuration.GetSection("ConnectionStrings").GetSection("SQLite").Value;
 
-            var db = new SqliteConnection(
+            string? dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
+
+            string? connectionString = configuration.GetSection("ConnectionStrings").GetSection("MySQL").Value + $"Password={dbPassword};";
+
+            var db = new MySqlConnection(
                string.Format(connectionString)
             );
 

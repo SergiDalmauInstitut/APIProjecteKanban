@@ -1,4 +1,4 @@
-using SQLitePCL;
+using DotNetEnv;
 
 namespace APIProjecteKanban
 {
@@ -6,7 +6,10 @@ namespace APIProjecteKanban
     {
         public static void Main(string[] args)
         {
-            Batteries.Init();
+            string root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
+
+            Env.Load(Path.Combine(root, ".env"));
+
             CreateHostBuilder(args).Build().Run();
         }
 
