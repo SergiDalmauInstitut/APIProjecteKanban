@@ -28,10 +28,10 @@ namespace APIProjecteKanban.DAL.Service
                         {
                             result.Add(new User
                             {
-                                Id = Convert.ToInt32(reader["Id"].ToString()),
-                                Name = reader["Name"].ToString(),
-                                LastName = reader["Lastname"].ToString(),
-                                Birthday = Convert.ToDateTime(reader["Birthday"])
+                                Id = reader.GetInt64("Id"),
+                                Name = reader.GetString("Name"),
+                                LastName = reader.GetString("Lastname"),
+                                Birthday = reader.GetDateTime("Birthday")
                             });
                         }
                     }
@@ -61,10 +61,10 @@ namespace APIProjecteKanban.DAL.Service
                         {
                             user = new User()
                             {
-                                Id = Convert.ToInt32(reader["id"].ToString()),
-                                Name = reader["Name"].ToString(),
-                                LastName = reader["Lastname"].ToString(),
-                                Birthday = Convert.ToDateTime(reader["Birthday"])
+                                Id = reader.GetInt64("id"),
+                                Name = reader.GetString("Name"),
+                                LastName = reader.GetString("Lastname"),
+                                Birthday = reader.GetDateTime("Birthday")
                             };
                         }
                     }

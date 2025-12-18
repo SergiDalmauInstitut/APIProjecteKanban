@@ -10,12 +10,19 @@ namespace APIProjecteKanban.Controllers
     [ApiController]
     public class ProjectController : ControllerBase
     {
-        // GET users/5
-        [HttpGet("{id}")]
-        public List<Project> Get(int id)
+        // GET projects/5
+        [HttpGet("users/{IdUser}")]
+        public List<Project> GetProjectsFromUserID(int IdUser)
         {
             ProjectService objProjectService = new ProjectService();
-            return objProjectService.GetAllFromUserId(id);
+            return objProjectService.GetAllProjectsFromUserId(IdUser);
+        }
+
+        [HttpGet("{IdProject}")]
+        public Project? GetProjectFromId(int IdProject)
+        {
+            ProjectService objProjectService = new ProjectService();
+            return objProjectService.GetProjectFromId(IdProject);
         }
     }
 }

@@ -2,8 +2,8 @@
 {
     public class Project
     {
-        public int Id { get; set; }
-        public int IdOwner { get; set; }
+        public long Id { get; set; }
+        public long IdOwner { get; set; }
         public string Name { get; set; }
         public DateTime LastUpdate { get; set; }
         public DateTime CreationDate { get; set; } = DateTime.Now;
