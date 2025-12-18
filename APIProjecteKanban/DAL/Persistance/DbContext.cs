@@ -7,10 +7,12 @@ namespace APIProjecteKanban.DAL.Persistance
         {
             IConfiguration configuration = GetConfiguration();
 
-            //obtenim la cadena de connexió del fitxer de configuració
-
+            //obtenim la contrasenya de la base de dades de l'arxiu .env
+            //(l'arxiu .env no es publica a GitHub per raons de seguretat, però es pot afegir després de descarregar el projecte)
+            //la contrasenya es la default.
             string? dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
 
+            //obtenim la cadena de connexió del fitxer de configuració
             string? connectionString = configuration.GetSection("ConnectionStrings").GetSection("MySQL").Value + $"Password={dbPassword};";
 
             var db = new MySqlConnection(

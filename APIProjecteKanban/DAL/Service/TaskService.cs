@@ -6,9 +6,10 @@ namespace APIProjecteKanban.DAL.Service
     public class TaskService
     {
         /// <summary>
-        /// Obté tots els usuaris
+        /// Obté totes les tasques d'un projecte
         /// </summary>
-        /// <returns></returns>
+        /// <param name="Id"></param>
+        /// <returns>Retorna una llista de tasques</returns>
         public List<Model.Task> GetAllTasksFromProjectId(int Id)
         {
             var result = new List<Model.Task>();
@@ -36,7 +37,12 @@ namespace APIProjecteKanban.DAL.Service
             }
             return result;
         }
-
+        /// <summary>
+        /// Afageix una tasca nova dins un projecte
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="task"></param>
+        /// <returns>La tasca creada</returns>
         public Model.Task Add(int Id, Model.Task task)
         {
             var result = task;
@@ -63,7 +69,13 @@ namespace APIProjecteKanban.DAL.Service
             }
             return result;
         }
-
+        /// <summary>
+        /// Actualitza les dades d'una tasca
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="task"></param>
+        /// <returns>1: la tasca s'ha modificat correctament
+        ///          0: la tasca no s'ha modificat</returns>
         public int Update(int id, Model.Task task)
         {
             int rows_affected = 0;

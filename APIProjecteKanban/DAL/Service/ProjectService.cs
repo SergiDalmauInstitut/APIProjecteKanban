@@ -7,9 +7,10 @@ namespace APIProjecteKanban.DAL.Service
     public class ProjectService
     {
         /// <summary>
-        /// Obté tots els usuaris
+        /// Obté tots els projectes d'un usuari a partir de la seva ID
         /// </summary>
-        /// <returns></returns>
+        /// <param name="Id"></param>
+        /// <returns>LLista de projectes d'un usuari</returns>
         public List<Project> GetAllProjectsFromUserId(int Id)
         {
             var result = new List<Project>();
@@ -32,7 +33,11 @@ namespace APIProjecteKanban.DAL.Service
             }
             return result;
         }
-        
+        /// <summary>
+        /// Retorna un projecte a partir de la seva ID
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns>Projecte</returns>
         public Project GetProjectFromId(int Id)
         {
             var result = new Project();
@@ -60,8 +65,12 @@ namespace APIProjecteKanban.DAL.Service
             }
             return result;
         }
-
-        private List<string> GetStatesList(string states)
+        /// <summary>
+        /// Separa els estats de les tasques, originalment en una string separats per comes, i els posa dins una llista
+        /// </summary>
+        /// <param name="states"></param>
+        /// <returns>LLista dels estats</returns>
+        private static List<string> GetStatesList(string states)
         {
 
             string[] statesArray = states.Split(',');
