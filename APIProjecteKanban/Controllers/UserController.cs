@@ -14,23 +14,42 @@ namespace APIProjecteKanban.Controllers
         [HttpGet]
         public List<User> Get()
         {
-            UserService objUserService = new UserService();
+            UserService objUserService = new();
             return objUserService.GetAll();
         }
 
         // GET users/5
         [HttpGet("{id}")]
-        public User Get(int id)
+        public User GetByID(int id)
         {
-            UserService objUserService = new UserService();
+            UserService objUserService = new();
             return objUserService.GetById(id);
+        }
+
+        // POST users
+        [HttpPost("login")]
+        public ActionResult<User> Login([FromBody] LoginDTO credentials)
+        {
+            UserService objUserService = new();
+            // Cridem el DAO per fer la comprovació a la BDD
+            User? user = objUserService.GetByMailPassword(credentials);
+
+            // Si el DAO retorna NULL, sabem que l'autenticació ha fallat.
+            if (user == null)
+            {
+                // 401 Unauthorized és el codi estàndard per a credencials incorrectes.
+                return Unauthorized(new { Message = "Correu electrònic o contrasenya incorrectes." });
+            }
+
+            // Si troba l'usuari, retorna l'usuari amb 200 OK.
+            return Ok(user);
         }
 
         // POST users
         [HttpPost]
         public User Post([FromBody] User user)
         {
-            UserService objUserService = new UserService();
+            UserService objUserService = new();
             return objUserService.Add(user);
         }
 
@@ -38,15 +57,15 @@ namespace APIProjecteKanban.Controllers
         [HttpPut("{id}")]
         public int Put(int id, [FromBody] User user)
         {
-            UserService objUserService = new UserService();
-            return objUserService.Update(user);
+            UserService objUserService = new();
+            return objUserService.Update(id, user);
         }
 
         // DELETE users/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            UserService objUserService = new UserService();
+            UserService objUserService = new();
             objUserService.Delete(id);
         }
     }

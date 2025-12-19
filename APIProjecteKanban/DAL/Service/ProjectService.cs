@@ -17,7 +17,7 @@ namespace APIProjecteKanban.DAL.Service
 
             using (var ctx = DbContext.GetInstance())
             {
-                var query = "SELECT p.Id, p.Name FROM Project p JOIN User_Project pu ON p.Id = pu.IdProject JOIN User u ON u.Id = pu.IdUser WHERE u.Id = @Id";
+                var query = "SELECT * Project p JOIN User_Project pu ON p.Id = pu.IdProject JOIN User u ON u.Id = pu.IdUser WHERE u.Id = @Id";
 
                 using var command = new MySqlCommand(query, ctx);
                 command.Parameters.Add(new MySqlParameter("Id", Id));

@@ -5,10 +5,11 @@
         public long Id { get; set; }
         public long IdOwner { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
         public DateTime LastUpdate { get; set; }
         public DateTime CreationDate { get; set; } = DateTime.Now;
-        public List<string> StatesList { get; set; } = new List<string>();
-        public List<User> UsersList { get; set; } = new List<User>();
-        public List<Model.Task> TaskList { get; set; } = new List<Model.Task>();
+        public List<string> StatesList { get; set; } = ["To do", "Doing", "Revising", "Done"];
+        public List<User> UsersList { get; set; } = [];
+        public List<Model.Task> TaskList { get; set; } = [];
     }
 }
