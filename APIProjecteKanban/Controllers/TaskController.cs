@@ -31,5 +31,13 @@ namespace APIProjecteKanban.Controllers
             TaskService objTaskService = new();
             return objTaskService.Update(idProject, task);
         }
+
+        // DELETE tasks/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+            TaskService objTaskService = new();
+            objTaskService.Delete(id);
+        }
     }
 }

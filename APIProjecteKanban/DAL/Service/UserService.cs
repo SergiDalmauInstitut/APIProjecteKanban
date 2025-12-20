@@ -43,7 +43,7 @@ namespace APIProjecteKanban.DAL.Service
         /// <returns>Dades de l'Usuari</returns>
         public User GetById(int Id)
         {
-            User user = new User();
+            User user = new();
 
             using (var ctx = DbContext.GetInstance())
             {

@@ -1,5 +1,6 @@
 ﻿using APIProjecteKanban.DAL.Persistance;
 using MySql.Data.MySqlClient;
+using System.Data;
 
 namespace APIProjecteKanban.DAL.Service
 {
@@ -30,8 +31,9 @@ namespace APIProjecteKanban.DAL.Service
                         Name = reader.GetString("Name"),
                         Description = reader.GetString("Description"),
                         State = reader.GetInt64("State"),
-                        LastUpdate = reader.GetDateTime("LastUpdate"),
-                        CreationDate = reader.GetDateTime("CreationDate"),
+                        Priority = reader.GetString("Priority"),
+                        EndDate = reader.IsDBNull("EndDate") ? null : reader.GetDateTime("EndDate"),
+                        StartDate = reader.GetDateTime("StartDate"),
                         IdResponsible = reader.GetInt64("IdResponsible"),
                         IdProject = IdProject
                     });
@@ -50,15 +52,15 @@ namespace APIProjecteKanban.DAL.Service
             var result = task;
             using (var ctx = DbContext.GetInstance())
             {
-                string query = "INSERT INTO Task (Name, Description, Priority, IdResponsible, CreationDate, LastUpdate, IdProject, State) VALUES (@Name, @Description, @Priority, @IdResponsible, @CreationDate, @LastUpdate, @IdProject, @State)";
+                string query = "INSERT INTO Task (Name, Description, Priority, IdResponsible, StartDate, EndDate, IdProject, State) VALUES (@Name, @Description, @Priority, @IdResponsible, @StartDate, @EndDate, @IdProject, @State)";
                 using var command = new MySqlCommand(query, ctx);
 
                 command.Parameters.Add(new MySqlParameter("name", result.Name));
                 command.Parameters.Add(new MySqlParameter("description", result.Description));
-                command.Parameters.Add(new MySqlParameter("priority", result.Priority));
+                command.Parameters.Add(new MySqlParameter("Priority", result.Priority));
                 command.Parameters.Add(new MySqlParameter("IdResponsible", result.IdResponsible));
-                command.Parameters.Add(new MySqlParameter("CreationDate", result.CreationDate));
-                command.Parameters.Add(new MySqlParameter("LastUpdate", result.LastUpdate));
+                command.Parameters.Add(new MySqlParameter("StartDate", result.StartDate));
+                command.Parameters.Add(new MySqlParameter("EndDate", result.EndDate));
                 command.Parameters.Add(new MySqlParameter("IdProject", IdProject));
                 command.Parameters.Add(new MySqlParameter("State", result.State));
 
@@ -82,20 +84,35 @@ namespace APIProjecteKanban.DAL.Service
             int rows_affected = 0;
             if (id == task.IdProject)
             {
-                task.LastUpdate = DateTime.Now;
                 using var ctx = DbContext.GetInstance();
 
-                string query = "UPDATE Task SET name = @name, description = @description, priority = @priority, IdResponsible = @IdResponsible, LastUpdate = @LastUpdate, State = @State  WHERE Id = @Id";
+                string query = "UPDATE Task SET name = @name, description = @description, Priority = @Priority, IdResponsible = @IdResponsible, StartDate = @StartDate, EndDate = @EndDate, State = @State  WHERE Id = @Id";
                 using var command = new MySqlCommand(query, ctx);
 
                 command.Parameters.Add(new MySqlParameter("name", task.Name));
                 command.Parameters.Add(new MySqlParameter("description", task.Description));
-                command.Parameters.Add(new MySqlParameter("priority", task.Priority));
+                command.Parameters.Add(new MySqlParameter("Priority", task.Priority));
                 command.Parameters.Add(new MySqlParameter("IdResponsible", task.IdResponsible));
-                command.Parameters.Add(new MySqlParameter("LastUpdate", task.LastUpdate));
+                command.Parameters.Add(new MySqlParameter("EndDate", task.EndDate));
+                command.Parameters.Add(new MySqlParameter("StartDate", task.StartDate));
                 command.Parameters.Add(new MySqlParameter("State", task.State));
                 command.Parameters.Add(new MySqlParameter("Id", task.Id));
 
+                rows_affected = command.ExecuteNonQuery();
+            }
+
+            return rows_affected;
+        }
+
+        public int Delete(int Id)
+        {
+            int rows_affected = 0;
+            using (var ctx = DbContext.GetInstance())
+            {
+                string query = "DELETE FROM Task WHERE Id = @Id";
+                using var command = new MySqlCommand(query, ctx);
+
+                command.Parameters.Add(new MySqlParameter("Id", Id));
                 rows_affected = command.ExecuteNonQuery();
             }
 
