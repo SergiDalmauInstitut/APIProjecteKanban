@@ -31,17 +31,14 @@ namespace APIProjecteKanban.Controllers
         public ActionResult<User> Login([FromBody] LoginDTO credentials)
         {
             UserService objUserService = new();
-            // Cridem el DAO per fer la comprovació a la BDD
+
             User? user = objUserService.GetByMailPassword(credentials);
 
-            // Si el DAO retorna NULL, sabem que l'autenticació ha fallat.
             if (user == null)
             {
-                // 401 Unauthorized és el codi estàndard per a credencials incorrectes.
                 return Unauthorized(new { Message = "Correu electrònic o contrasenya incorrectes." });
             }
 
-            // Si troba l'usuari, retorna l'usuari amb 200 OK.
             return Ok(user);
         }
 

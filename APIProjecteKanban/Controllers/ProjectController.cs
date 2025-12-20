@@ -17,6 +17,13 @@ namespace APIProjecteKanban.Controllers
             ProjectService objProjectService = new();
             return objProjectService.GetAllProjectsFromUserId(IdUser);
         }
+        // GET projects/users/5
+        [HttpGet("{IdProject}/users")]
+        public List<User> GetUsersFromProjectId(int IdProject)
+        {
+            ProjectService objProjectService = new();
+            return objProjectService.GetUsersFromProjectId(IdProject);
+        }
         // GET projects/5
         [HttpGet("{IdProject}")]
         public Project? GetProjectFromId(int IdProject)

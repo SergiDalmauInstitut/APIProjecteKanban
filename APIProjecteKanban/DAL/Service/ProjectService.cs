@@ -67,6 +67,32 @@ namespace APIProjecteKanban.DAL.Service
             return result;
         }
 
+        public List<User> GetUsersFromProjectId(long IdProject)
+        {
+            var result = new List<User>();
+
+            using (var ctx = DbContext.GetInstance())
+            {
+                var query = "SELECT u.Id, u.Name, u.Lastname, u.Birthday FROM User_Project up JOIN User u ON u.Id = up.IdUser WHERE IdProject = @IdProject";
+
+                using var command = new MySqlCommand(query, ctx);
+
+                command.Parameters.Add(new MySqlParameter("IdProject", IdProject));
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    result.Add( new()
+                    {
+                        Id = reader.GetInt64("Id"),
+                        Name = reader.GetString("Name"),
+                        LastName = reader.GetString("Lastname"),
+                        Birthday = reader.GetDateTime("Birthday")
+                    });
+                }
+            }
+            return result;
+        }
+
         public Project Add(Project project)
         {
             var result = project;
